@@ -20,4 +20,31 @@ public class UserController {
     public User getUserByUsername(@PathVariable String username) {
         return userService.findByUsername(username);
     }
+
+    @PostMapping("/register")
+    public String registerUser(User user) {
+        userService.saveUser(user);
+        return "redirect:/login";
+    }
+
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";
+    }
+
+    @GetMapping("/register")
+    public String registerPage() {
+        return "register";
+    }
+
+    @PutMapping("/{id}")
+    public User updateUser(@PathVariable Long id, @RequestBody User user) {
+        user.setId(id);
+        return userService.updateUser(user);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+    }
 }

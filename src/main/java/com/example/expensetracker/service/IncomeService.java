@@ -9,22 +9,34 @@ import java.util.List;
 
 @Service
 public class IncomeService {
+
     @Autowired
     private IncomeRepository incomeRepository;
 
-    public List<Income> getAllIncome() {
-        return incomeRepository.findAll();
+    public List<Income> getAllIncomesByUser(String username) {
+        return incomeRepository.findByUserUsername(username);
     }
 
-    public Income saveIncome(Income income) {
+    public Income saveIncome(Income income, String username) {
+        income.setUserUsername(username);
         return incomeRepository.save(income);
     }
 
-    public Income getIncomeById(Long id) {
-        return incomeRepository.findById(id).orElse(null);
+    public Income getIncomeByIdAndUser(Long id, String username) {
+        return incomeRepository.findByIdAndUserUsername(id, username).orElse(null);
     }
 
-    public void deleteIncome(Long id) {
-        incomeRepository.deleteById(id);
+    public Income updateIncome(Long id, Income income, String username) {
+        if (incomeRepository.existsByIdAndUserUsername(id, username)) {
+            income.setId(id);
+            income.setUserUsername(username);
+            return incomeRepository.save(income);
+        } else {
+            return null;
+        }
+    }
+
+    public void deleteIncome(Long id, String username) {
+        incomeRepository.deleteByIdAndUserUsername(id, username);
     }
 }

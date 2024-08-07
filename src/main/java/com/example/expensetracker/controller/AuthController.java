@@ -22,5 +22,13 @@ public class AuthController {
         return userService.saveUser(user);
     }
 
-    // Метод для обработки логина будет настраиваться автоматически Spring Security
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";
+    }
+
+    @GetMapping("/register")
+    public String registerPage() {
+        return "register";
+    }
 }

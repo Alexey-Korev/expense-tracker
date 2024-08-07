@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "incomes")
@@ -14,16 +15,14 @@ public class Income {
     private Long id;
 
     @Column(nullable = false)
+    private String userUsername;
+
+    @Column(nullable = false)
     private String description;
 
     @Column(nullable = false)
     private Double amount;
 
-    @Column(nullable = false)
-    private LocalDate date;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 }

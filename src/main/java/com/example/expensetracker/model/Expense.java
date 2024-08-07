@@ -14,18 +14,19 @@ public class Expense {
     private Long id;
 
     @Column(nullable = false)
+    private String userUsername;
+
+    @Column(nullable = false)
     private Double amount;
 
     @Column(nullable = false)
     private String description;
 
     @Column(nullable = false)
-    private LocalDateTime date;
-
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private ExpenseType expenseType;
+    private ExpenseType type;
 
-    @Column
-    private String details;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
 }

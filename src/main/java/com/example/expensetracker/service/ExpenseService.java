@@ -10,18 +10,38 @@ import java.util.List;
 
 @Service
 public class ExpenseService {
+
     @Autowired
     private ExpenseRepository expenseRepository;
 
-    public Expense saveExpense(Expense expense) {
+    public List<Expense> getAllExpensesByUser(String username) {
+        return expenseRepository.findByUserUsername(username);
+    }
+
+    public Expense saveExpense(Expense expense, String username) {
+        expense.setUserUsername(username);
         return expenseRepository.save(expense);
     }
 
-    public List<Expense> getAllExpenses() {
-        return expenseRepository.findAll();
+    public Object getExpenseByIdAndUser(Long id, String username) {
+        return expenseRepository.findByIdAndUserUsername(id, username).orElse(null);
     }
 
-    public List<Expense> getExpensesByType(ExpenseType expenseType) {
-        return expenseRepository.findByExpenseType(expenseType);
+    public Expense updateExpense(Long id, Expense expense, String username) {
+        if (expenseRepository.existsByIdAndUserUsername(id, username)) {
+            expense.setId(id);
+            expense.setUserUsername(username);
+            return expenseRepository.save(expense);
+        } else {
+            return null;
+        }
+    }
+
+    public void deleteExpense(Long id, String username) {
+        expenseRepository.deleteByIdAndUserUsername(id, username);
+    }
+
+    public List<Expense> getExpensesByTypeAndUser(ExpenseType type, String username) {
+        return expenseRepository.findByTypeAndUserUsername(type, username);
     }
 }
