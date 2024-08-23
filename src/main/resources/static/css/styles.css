@@ -24,3 +24,29 @@ nav ul li a {
     color: white;
     text-decoration: none;
 }
+.error-container {
+    text-align: center;
+    padding: 50px;
+    font-family: Arial, sans-serif;
+}
+
+.error-container h1 {
+    font-size: 48px;
+    color: #333;
+}
+
+.error-container p {
+    font-size: 18px;
+    color: #777;
+}
+
+.error-container a {
+    display: inline-block;
+    margin-top: 20px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.error-container a:hover {
+    color: #0056b3;
+}

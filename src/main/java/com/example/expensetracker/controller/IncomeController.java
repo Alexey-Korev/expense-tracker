@@ -17,18 +17,36 @@ public class IncomeController {
     @Autowired
     private IncomeService incomeService;
 
+    @PostMapping
+    public String createIncome(@ModelAttribute Income income, Principal principal) {
+        incomeService.saveIncome(income, principal.getName());
+        return "redirect:/incomes";
+    }
+
     @GetMapping
-    public String getAllIncome(Principal principal, Model model) {
+    public String getAllIncome(Model model, Principal principal) {
         List<Income> incomes = incomeService.getAllIncomesByUser(principal.getName());
         model.addAttribute("incomes", incomes);
-        return "incomes"; // возвращаем страницу доходов
+        return "incomes"; // Возвращаем имя шаблона
     }
 
     @GetMapping("/{id}")
-    public String getIncomeById(@PathVariable Long id, Principal principal, Model model) {
+    public String getIncomeById(@PathVariable Long id, Model model, Principal principal) {
         Income income = incomeService.getIncomeByIdAndUser(id, principal.getName());
         model.addAttribute("income", income);
-        return "income-detail"; // возвращаем страницу с деталями дохода
+        return "income-details"; // Возвращаем имя шаблона
+    }
+
+    @PutMapping("/{id}")
+    public String updateIncome(@PathVariable Long id, @ModelAttribute Income income, Principal principal) {
+        incomeService.updateIncome(id, income, principal.getName());
+        return "redirect:/incomes";
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteIncome(@PathVariable Long id, Principal principal) {
+        incomeService.deleteIncome(id, principal.getName());
+        return "redirect:/incomes";
     }
 }
 

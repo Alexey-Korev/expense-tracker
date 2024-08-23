@@ -19,28 +19,42 @@ public class ExpenseController {
     @Autowired
     private ExpenseService expenseService;
 
+    @PostMapping
+    public String createExpense(@ModelAttribute Expense expense, Principal principal) {
+        expenseService.saveExpense(expense, principal.getName());
+        return "redirect:/expenses";
+    }
+
     @GetMapping
-    public String getAllExpenses(Principal principal, Model model) {
+    public String getAllExpenses(Model model, Principal principal) {
         List<Expense> expenses = expenseService.getAllExpensesByUser(principal.getName());
         model.addAttribute("expenses", expenses);
-        return "expenses"; // возвращаем страницу расходов
+        return "expenses"; // Возвращаем имя шаблона
     }
 
     @GetMapping("/type/{type}")
-    public String getExpensesByType(@PathVariable ExpenseType type, Principal principal, Model model) {
+    public String getExpensesByType(@PathVariable ExpenseType type, Model model, Principal principal) {
         List<Expense> expenses = expenseService.getExpensesByTypeAndUser(type, principal.getName());
         model.addAttribute("expenses", expenses);
-        return "expenses-by-type"; // возвращаем страницу с фильтрованными расходами
+        return "expenses"; // Возвращаем имя шаблона
     }
 
     @GetMapping("/{id}")
-    public String getExpenseById(@PathVariable Long id, Principal principal, Model model) {
+    public String getExpenseById(@PathVariable Long id, Model model, Principal principal) {
         Expense expense = (Expense) expenseService.getExpenseByIdAndUser(id, principal.getName());
         model.addAttribute("expense", expense);
-        return "expense-detail"; // возвращаем страницу с деталями расхода
+        return "expense-details"; // Возвращаем имя шаблона
     }
-    @GetMapping("/{id}")
-    public Object getExpenseById(@PathVariable Long id, Principal principal) {
-        return expenseService.getExpenseByIdAndUser(id, principal.getName());
+
+    @PutMapping("/{id}")
+    public String updateExpense(@PathVariable Long id, @ModelAttribute Expense expense, Principal principal) {
+        expenseService.updateExpense(id, expense, principal.getName());
+        return "redirect:/expenses";
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteExpense(@PathVariable Long id, Principal principal) {
+        expenseService.deleteExpense(id, principal.getName());
+        return "redirect:/expenses";
     }
 }
